@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PayPal Clone - Login</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      border-radius: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #0070ba;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h2>PayPal Login</h2>
+    <input type="text" id="email" placeholder="Enter email">
+    <button onclick="login()">Login</button>
+  </div>
+
+<script>
+  function login() {
+    let email = document.getElementById("email").value;
+
+    if(email === "") {
+      alert("Enter email");
+      return;
+    }
+
+    localStorage.setItem("userEmail", email);
+
+    // First time user? Give starting balance
+    if(!localStorage.getItem("balance")) {
+      localStorage.setItem("balance", 1000);
+    }
+
+    window.location.href = "dashboard.html";
+  }
+</script>
+
+</body>
+</html>
