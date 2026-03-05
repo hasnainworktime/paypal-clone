@@ -1,0 +1,20 @@
+function receiveMoney() {
+  let sender = document.getElementById("sender").value;
+  let amount = parseInt(document.getElementById("receiveAmount").value);
+  let balance = parseInt(localStorage.getItem("balance"));
+
+  if(sender === "" || amount <= 0) {
+    alert("Enter valid details");
+    return;
+  }
+
+  balance += amount;
+  localStorage.setItem("balance", balance);
+
+  let history = localStorage.getItem("transactions") || "";
+  history += "Received $" + amount + " from " + sender + "<br>";
+  localStorage.setItem("transactions", history);
+
+  loadBalance();
+  loadHistory();
+}
