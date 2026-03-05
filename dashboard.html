@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PayPal Clone - Dashboard</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f5f7fa;
+      margin: 0;
+    }
+
+    .header {
+      background: #0070ba;
+      color: white;
+      padding: 15px;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+    }
+
+    button {
+      padding: 10px;
+      background: #0070ba;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <span id="userEmail"></span>
+  <button onclick="logout()" style="float:right;background:red;">Logout</button>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <h3>Wallet Balance</h3>
+    <h2 id="balance"></h2>
+  </div>
+
+  <div class="card">
+    <h3>Send Money</h3>
+    <input type="text" id="receiver" placeholder="Receiver Email">
+    <input type="number" id="amount" placeholder="Amount">
+    <button onclick="sendMoney()">Send</button>
+  </div>
+
+  <div class="card">
+    <h3>Transaction History</h3>
+    <div id="history"></div>
+  </div>
+
+</div>
+
+<script>
+  let email = localStorage.getItem("userEmail");
+
+  if(!email) {
+    window.location.href = "index.html";
+  }
+
+  document.getElementById("userEmail").innerText = email;
+
+  function loadBalance() {
+    document.getElementById("balance").innerText = 
+      "$" + localStorage.getItem("balance");
+  }
+
+  function sendMoney() {
+    let receiver = document.getElementById("receiver").value;
+    let amount = parseInt(document.getElementById("amount").value);
+    let balance = parseInt(localStorage.getItem("balance"));
+
+    if(receiver === "" || amount <= 0) {
+      alert("Enter valid details");
+      return;
+    }
+
+    if(amount > balance) {
+      alert("Insufficient balance");
+      return;
+    }
+
+    balance -= amount;
+    localStorage.setItem("balance", balance);
+
+    let history = localStorage.getItem("transactions") || "";
+    history += "Sent $" + amount + " to " + receiver + "<br>";
+    localStorage.setItem("transactions", history);
+
+    loadBalance();
+    loadHistory();
+  }
+
+  function loadHistory() {
+    document.getElementById("history").innerHTML =
+      localStorage.getItem("transactions") || "No transactions yet";
+  }
+
+  function logout() {
+    localStorage.removeItem("userEmail");
+    window.location.href = "index.html";
+  }
+
+  loadBalance();
+  loadHistory();
+</script>
+
+</body>
+</html>
